@@ -1,112 +1,92 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { computed } from "vue";
+import { useSudokuEndlessStore } from "@/stores/sudokuEndless";
+import { useConsole } from "@/stores/console";
+import { range, enumerate } from "@/modules/generators";
+const console = useConsole();
+console.log(console);
+
+const store = useSudokuEndlessStore();
 
 // Grid functions
-const gridSize = reactive({ columns: 9, rows: 9, house: { width: 3, height: 3 } });
-if (gridSize.columns % gridSize.house.width) console.error("Can't fit integer number of houses (horizontally)");
-if (gridSize.rows % gridSize.house.height) console.error("Can't fit integer number of houses (vertically)");
-
-const numberOfHouseColumns = computed(() => {
-  return Math.floor(gridSize.columns / gridSize.house.width);
-});
-const numberOfHouseRows = computed(() => {
-  return Math.floor(gridSize.rows / gridSize.house.height);
-});
-
 function getHouseColumn(houseIndex) {
-  return houseIndex % numberOfHouseColumns.value;
+  return houseIndex % store.gridSize.house.columns;
 }
 function getHouseRow(houseIndex) {
-  return Math.floor(houseIndex / numberOfHouseColumns.value);
-}
-
-function getHouse(row, column) {
-  const houseRow = Math.floor(row / gridSize.house.height);
-  const houseColumn = Math.floor(column / gridSize.house.width);
-
-  return houseRow * numberOfHouseColumns.value + houseColumn;
+  return Math.floor(houseIndex / store.gridSize.house.columns);
 }
 
 // Styling
-const defaultCellStyle = [
-  "aspect-square",
-  "w-10",
-  "h-10",
-  "text-3xl",
-  "text-green-400",
-  "hover:bg-slate-600",
-  "focus:bg-green-400",
-  "focus:text-slate-900",
-];
+const dynamicGridSize = computed(() => ({
+  gridTemplateColumns: `repeat(${store.gridSize.columns}, auto)`,
+  gridTemplateRows: `repeat(${store.gridSize.rows}, auto)`,
+}));
 
-function houseStyling(houseIndex) {
+function styleByHouse(houseIndex) {
   const darkBackground = "bg-slate-800";
   const lightBackground = "bg-slate-700";
 
   const houseColumn = getHouseColumn(houseIndex);
   const houseRow = getHouseRow(houseIndex);
 
-  const houseStyle = [(houseColumn + (houseRow % 2)) % 2 ? darkBackground : lightBackground];
-  return houseStyle;
+  const backgroundColor = (houseColumn + (houseRow % 2)) % 2 ? darkBackground : lightBackground;
+  return [backgroundColor];
 }
 
-const dynamicGridSize = reactive({
-  gridTemplateColumns: `repeat(${gridSize.columns}, auto)`,
-  gridTemplateRows: `repeat(${gridSize.rows}, auto)`,
-});
-
-// Setup Grid
-const gridCells = reactive([]);
-for (let row = 0; row < gridSize.rows; row++) {
-  for (let column = 0; column < gridSize.columns; column++) {
-    const cellIndex = row * gridSize.columns + column;
-    const house = getHouse(row, column);
-    const cell = {
-      row,
-      column,
-      house,
-      value: house,
-      id: cellIndex,
-      class: [...defaultCellStyle, ...houseStyling(house)],
-    };
-    gridCells.push(cell);
-  }
+function gridColumnsOnBlur(event) {
+  console.log("New Columns", event.target.value);
+  let updatedGridSize = store.gridSize;
+  updatedGridSize.columns = event.target.value;
+  store.setGridSize(updatedGridSize);
 }
 
-// Debug
-console.log("Grid setup", {
-  cells: {
-    count: gridSize.rows * gridSize.columns,
-    rows: gridSize.rows,
-    columns: gridSize.columns,
-  },
-  houses: {
-    count: numberOfHouseRows.value * numberOfHouseColumns.value,
-    rows: numberOfHouseRows.value,
-    columns: numberOfHouseColumns.value,
-    size: gridSize.house.width + "x" + gridSize.house.height,
-  },
-});
+for (const [index, s] of enumerate(range(10, 0, -2))) {
+  console.log("generator", index, s, typeof s);
+}
 </script>
 
 <template>
   <main>
     <div id="game-area" class="my-5">
-      <div class="grid place-content-center place-items-center gap-1" :style="dynamicGridSize">
-        <div v-for="cell in gridCells" :key="cell.id" :class="cell.class">
+      <div class="grid place-content-center place-items-center gap-0" :style="dynamicGridSize">
+        <div
+          v-for="cell in store.cells"
+          :key="cell.id"
+          class="w-10 h-10 text-4xl text-green-400 focus-within:bg-green-500 focus-within:text-slate-900"
+          :class="styleByHouse(cell.house)"
+        >
           <div class="text-center">
-            <input type="number" class="w-10 h-10 bg-transparent" :value="cell.value" />
+            <label class="inline-block w-10 h-10">
+              {{ cell.value }}
+              <input
+                @input="cell.value = $event.data.toUpperCase()"
+                type="text"
+                class="absolute opacity-0 -z-50 w-10 h-10 bg-slate-700"
+                tabindex="0"
+              />
+            </label>
           </div>
         </div>
       </div>
     </div>
-    <div id="interface-area"></div>
+    <div id="interface-area">
+      <label>
+        Grid Columns
+        <input class="m-5 text-slate-900" @blur="gridColumnsOnBlur" :value="store.gridSize.columns" />
+      </label>
+      <button
+        @click="console.log('Clicked!')"
+        class="block m-4 p-2 bg-green-400 hover:bg-green-300 active:bg-green-600 text-slate-800"
+      >
+        Print to Console
+      </button>
+      <button
+        @click="console.hidden = !console.hidden"
+        class="block m-4 p-2 bg-green-400 hover:bg-green-300 active:bg-green-600 text-slate-800"
+      >
+        Toggle Console
+      </button>
+      Console Hidden: {{ console.hidden }}
+    </div>
   </main>
 </template>
-
-<style scoped>
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  display: none;
-}
-</style>
