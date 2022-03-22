@@ -18,7 +18,7 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
     {
-      path: "/sudoku/endless",
+      path: "/sudoku",
       name: "sudoku_endless",
       component: () => import("../views/SudokuEndlessView.vue"),
     },
