@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "workbench.colorTheme": "Night Owl",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "css.lint.unknownAtRules": "ignore",
+  "editor.formatOnSave": true,
+  "editor.fontFamily": "'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true
+}
