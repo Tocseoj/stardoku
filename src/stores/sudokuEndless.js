@@ -1,74 +1,112 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { computed, reactive } from "vue";
+import { xor } from "@/modules/logic";
+import { error } from "../modules/exceptions";
+// import { useConsole } from "@/stores/console.js";
+// const console = useConsole();
 
 export const useSudokuEndlessStore = defineStore("sudokuEndless", () => {
   const numberOfHouseColumns = computed(() => {
+    if (gridSize.house.width === 0) {
+      return 0;
+    }
     return Math.floor(gridSize.columns / gridSize.house.width);
   });
   const numberOfHouseRows = computed(() => {
+    if (gridSize.house.height === 0) {
+      return 0;
+    }
     return Math.floor(gridSize.rows / gridSize.house.height);
   });
 
-  const gridSize = {
-    columns: 9,
-    rows: 9,
+  const gridSize = reactive({
+    columns: 10,
+    rows: 10,
     house: {
-      width: 3,
-      height: 3,
+      width: 5,
+      height: 5,
       columns: numberOfHouseColumns,
       rows: numberOfHouseRows,
     },
-  };
+  });
 
-  function setGridSize(newGridSize) {
-    if (newGridSize.columns % newGridSize.house.width || newGridSize.rows % newGridSize.house.height) {
-      throw new Error(
-        "Can't fit integer number of houses. (horizontal: ",
-        (newGridSize.columns % newGridSize.house.width ? "failed" : "succeeded") +
-          ", vertical: " +
-          (newGridSize.rows % newGridSize.house.height ? "failed" : "succeeded") +
-          ")"
-      );
-    }
-    this.gridSize = newGridSize;
-    this.cells = generateGridCells();
-  }
-
-  function cellByPosition(row, column) {
+  function cellByPosition(column, row) {
     return row * gridSize.columns + column;
   }
 
-  function houseByPosition(row, column) {
-    const houseRow = Math.floor(row / gridSize.house.height);
+  function houseByPosition(column, row) {
+    if (gridSize.house.height < 1 || gridSize.house.width < 1) {
+      return null;
+    }
+
     const houseColumn = Math.floor(column / gridSize.house.width);
+    const houseRow = Math.floor(row / gridSize.house.height);
 
     return houseRow * numberOfHouseColumns.value + houseColumn;
   }
 
   function generateGridCells() {
-    const tempGridCells = [];
+    cells.splice(0);
     for (let row = 0; row < gridSize.rows; row++) {
       for (let column = 0; column < gridSize.columns; column++) {
-        const house = houseByPosition(row, column);
-        const id = cellByPosition(row, column);
+        const house = houseByPosition(column, row);
+        const id = cellByPosition(column, row);
         const cell = {
-          row,
           column,
+          row,
           house,
           id,
-          value: house.toString(),
+          value: house?.toString(16) ?? "_",
         };
-        tempGridCells.push(cell);
+        cells.push(cell);
       }
     }
-    return tempGridCells;
+    return cells;
   }
 
-  const cells = reactive(generateGridCells());
+  let cells = reactive([]);
+  generateGridCells();
+
+  function validateDimensions(columns, rows, houseWidth, houseHeight) {
+    if (houseWidth < 0 || houseHeight < 0 || columns < 0 || rows < 0) {
+      throw error("Can't have a negative dimension.", { columns, rows, houseWidth, houseHeight });
+    }
+    if (columns % houseWidth || rows % houseHeight) {
+      const horizontal = columns % houseWidth ? "failed" : "succeeded";
+      const vertical = rows % houseHeight ? "failed" : "succeeded";
+      throw error("Can't fit integer number of houses.", { horizontal, vertical });
+    }
+    if (xor(houseWidth, houseHeight) || xor(columns, rows)) {
+      throw error("Can't have a lone zero dimension.", { columns, rows, houseWidth, houseHeight });
+    }
+    return true;
+  }
+
+  function setGridDimensions(columns, rows, houseWidth = null, houseHeight = null) {
+    houseWidth = houseWidth ?? gridSize.house.width;
+    houseHeight = houseHeight ?? gridSize.house.height;
+
+    // Validation; throws Errors
+    validateDimensions(columns, rows, houseWidth, houseHeight);
+
+    gridSize.columns = columns;
+    gridSize.rows = rows;
+    gridSize.house.width = houseWidth;
+    gridSize.house.height = houseHeight;
+
+    generateGridCells();
+  }
+
+  function setHouseDimensions(columns, rows, width = null, height = null) {
+    setGridDimensions(columns * width, rows * height, width, height);
+  }
 
   return {
     gridSize,
-    setGridSize,
+    cellByPosition,
+    houseByPosition,
+    setGridDimensions,
+    setHouseDimensions,
     cells,
   };
 });
