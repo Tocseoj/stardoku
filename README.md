@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master//docs/images/redoc.png" width="400px" href="[page-url]" />
+<!--   <img alt="TODO logo" src="" width="400px" href="[page-url]" /> -->
 
   # Stardoku
 
@@ -8,9 +8,9 @@
   [![GitHub](https://img.shields.io/github/license/Tocseoj/stardoku)](https://github.com/Tocseoj/stardoku/blob/main/LICENSE)
 </div>
 
-About Stardoku
+## About Stardoku
 > Stardew themed sudoku & picross web app; built with love
 
-## [Demo 💥][page-url]
+## [Work in progress: stardoku.j-m.dev][page-url]
 
 [page-url]: https://stardoku.j-m.dev
