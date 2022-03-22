@@ -1,35 +1,16 @@
-# stardoku
+<div align="center">
+  <img alt="Redoc logo" src="https://raw.githubusercontent.com/Redocly/redoc/master//docs/images/redoc.png" width="400px" href="[page-url]" />
 
-This template should help get you started developing with Vue 3 in Vite.
+  # Stardoku
 
-## Recommended IDE Setup
+  ![GitHub package.json version](https://img.shields.io/github/package-json/v/Tocseoj/stardoku)
+  [![Netlify](https://img.shields.io/netlify/3f40abca-c46a-4d54-96d6-f95c1f9c6ce5)][page-url]
+  [![GitHub](https://img.shields.io/github/license/Tocseoj/stardoku)](https://github.com/Tocseoj/stardoku/blob/main/LICENSE)
+</div>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin).
+About Stardoku
+> Stardew themed sudoku & picross web app; built with love
 
-## Customize configuration
+## [Demo 💥][page-url]
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+[page-url]: https://stardoku.j-m.dev
