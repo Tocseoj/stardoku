@@ -67,10 +67,18 @@ function onUpdateGrid() {
 function onUpdateHouse() {
   store.setHouseDimensions(houseColumns.value, houseRows.value, houseWidth.value, houseHeight.value);
 }
+
+function focusNextRow() {
+  console.warn("TODO: focus next row");
+}
+function focusPrevRow() {
+  console.warn("TODO: focus prev row");
+}
 </script>
 
 <template>
-  <div id="game-area" class="my-5 pb-3 w-screen overflow-x-scroll overflow-y-hidden">
+  <div id="game-area" class="my-5 pb-3 w-screen overflow-x-auto overflow-y-hidden">
+    <div @click.stop class="absolute opacity-0 -z-40 w-10 h-10 top-0 left-0">Click prevention hack</div>
     <div class="grid place-content-center place-items-center gap-0 min-w-max mx-1" :style="dynamicGridSize">
       <template v-for="cell in store.cells" :key="cell.id">
         <template v-if="isPicross && cell.row === 0 && cell.column === 0">
@@ -104,14 +112,16 @@ function onUpdateHouse() {
           :class="backgroundGrid(cell)"
         >
           <div class="text-center">
-            <input
-              @input="cell.value = $event.data"
-              type="text"
-              class="absolute opacity-0 -z-50 w-10 h-10 bg-slate-700"
-              tabindex="0"
-            />
             <label class="inline-block w-10 h-10">
               {{ cell.value }}
+              <input
+                @input="cell.value = $event.data"
+                type="text"
+                class="absolute opacity-0 -z-50 w-10 h-10 top-0 left-0"
+                tabindex="0"
+                @keydown.enter.exact="focusNextRow"
+                @keydown.shift.enter="focusPrevRow"
+              />
             </label>
           </div>
         </div>
