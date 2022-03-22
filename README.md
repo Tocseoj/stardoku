@@ -3,7 +3,7 @@
 
   # Stardoku
 
-  ![GitHub package.json version](https://img.shields.io/github/package-json/v/Tocseoj/stardoku)
+  [![GitHub package.json version](https://img.shields.io/github/package-json/v/Tocseoj/stardoku)](https://github.com/Tocseoj/stardoku/blob/main/package.json)
   [![Netlify](https://img.shields.io/netlify/3f40abca-c46a-4d54-96d6-f95c1f9c6ce5)][page-url]
   [![GitHub](https://img.shields.io/github/license/Tocseoj/stardoku)](https://github.com/Tocseoj/stardoku/blob/main/LICENSE)
 </div>
