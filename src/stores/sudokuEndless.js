@@ -20,17 +20,17 @@ export const useSudokuEndlessStore = defineStore("sudokuEndless", () => {
   });
 
   const gridSize = reactive({
-    columns: 10,
-    rows: 10,
+    columns: 9,
+    rows: 9,
     house: {
-      width: 5,
-      height: 5,
+      width: 3,
+      height: 3,
       columns: numberOfHouseColumns,
       rows: numberOfHouseRows,
     },
   });
 
-  const isPicross = ref(true);
+  const isPicross = ref(false);
 
   function cellByPosition(column, row) {
     return row * gridSize.columns + column;

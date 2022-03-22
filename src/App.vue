@@ -3,9 +3,11 @@ import { RouterView, RouterLink } from "vue-router";
 </script>
 
 <template>
-  <header class="flex flex-col items-center text-center m-4">
-    <img alt="Vue logo" class="block" src="@/assets/logo.svg" width="25" height="25" />
-    <RouterLink to="/" class="text-sm px-1 border-b-2 border-green-300 border-double rounded-b">Stardoku</RouterLink>
+  <header class="flex flex-col items-center m-4">
+    <RouterLink to="/" class="text-sm px-1 border-b-2 border-green-300 border-double rounded-b">
+      <img alt="Vue logo" class="block m-auto" src="@/assets/logo.svg" width="25" height="25" />
+      <span style="font-variant-caps: all-small-caps">Stardoku</span>
+    </RouterLink>
 
     <nav class="w-screen flex justify-around">
       <RouterLink

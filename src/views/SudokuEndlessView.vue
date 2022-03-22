@@ -42,12 +42,13 @@ function backgroundGrid(cell) {
   const lightBackground = "bg-slate-700";
 
   // Checker by house
-  // const houseColumn = getHouseColumn(cell.house);
-  // const houseRow = getHouseRow(cell.house);
-  // const backgroundColor = (houseColumn + (houseRow % 2)) % 2 ? darkBackground : lightBackground;
+  const houseColumn = getHouseColumn(cell.house);
+  const houseRow = getHouseRow(cell.house);
+  const backgroundColor = (houseColumn + (houseRow % 2)) % 2 ? darkBackground : lightBackground;
 
   // Checker by cell
-  const backgroundColor = (cell.column + (cell.row % 2)) % 2 ? darkBackground : lightBackground;
+  // const backgroundColor = (cell.column + (cell.row % 2)) % 2 ? darkBackground : lightBackground;
+
   return [backgroundColor];
 }
 
@@ -130,6 +131,7 @@ function focusPrevRow() {
     </div>
   </div>
   <div id="interface-area">
+    <h2 class="m-2 italic">Debug Area</h2>
     <div class="border border-1 border-green-200 m-2 p-2">
       <label>
         Grid Columns
