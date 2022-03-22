@@ -4,6 +4,7 @@ import { useSudokuEndlessStore } from "@/stores/sudokuEndless";
 import { useConsole } from "@/stores/console";
 import { range, enumerate } from "@/modules/generators";
 import { max } from "@/modules/math";
+import { storeToRefs } from "pinia";
 const console = useConsole();
 console.log(console);
 
@@ -17,7 +18,7 @@ function getHouseRow(houseIndex) {
   return Math.floor(houseIndex / store.gridSize.house.columns);
 }
 
-const isPicross = ref(true);
+const { isPicross } = storeToRefs(store);
 
 // Styling
 const dynamicGridSize = computed(() => {
@@ -171,19 +172,27 @@ function focusPrevRow() {
         Update House Dimensions
       </button>
     </div>
+    <div class="m-2">
+      <label class="block border border-1 border-green-200 p-2">
+        <input type="checkbox" v-model="isPicross" name="isPicross" />
+        <span class="pl-2">Is Picross</span>
+      </label>
+    </div>
 
-    <button
-      @click="console.log('Clicked!')"
-      class="block m-4 p-2 bg-green-400 hover:bg-green-300 active:bg-green-600 text-slate-800"
-    >
-      Print to Console
-    </button>
-    <button
-      @click="console.hidden = !console.hidden"
-      class="block m-4 p-2 bg-green-400 hover:bg-green-300 active:bg-green-600 text-slate-800"
-    >
-      Toggle Console
-    </button>
-    Console Hidden: {{ console.hidden }}
+    <div class="border border-1 border-green-200 m-2 p-2">
+      <button
+        @click="console.log('Clicked!')"
+        class="m-4 p-2 bg-green-400 hover:bg-green-300 active:bg-green-600 text-slate-800"
+      >
+        Print to Console
+      </button>
+      <button
+        @click="console.hidden = !console.hidden"
+        class="m-4 p-2 bg-green-400 hover:bg-green-300 active:bg-green-600 text-slate-800"
+      >
+        Toggle Console
+      </button>
+      <span class="inline-block m-4">Console Hidden: {{ console.hidden }}</span>
+    </div>
   </div>
 </template>

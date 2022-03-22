@@ -1,5 +1,5 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { xor } from "@/modules/logic";
 import { error } from "../modules/exceptions";
 // import { useConsole } from "@/stores/console.js";
@@ -29,6 +29,8 @@ export const useSudokuEndlessStore = defineStore("sudokuEndless", () => {
       rows: numberOfHouseRows,
     },
   });
+
+  const isPicross = ref(true);
 
   function cellByPosition(column, row) {
     return row * gridSize.columns + column;
@@ -103,6 +105,7 @@ export const useSudokuEndlessStore = defineStore("sudokuEndless", () => {
 
   return {
     gridSize,
+    isPicross,
     cellByPosition,
     houseByPosition,
     setGridDimensions,
