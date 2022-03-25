@@ -1,10 +1,10 @@
 <script setup>
-import { computed, ref } from "vue";
-import { useSudokuEndlessStore } from "@/stores/sudokuEndless";
-import { useConsole } from "@/stores/console";
-import { range, enumerate } from "@/modules/generators";
-import { max } from "@/modules/math";
-import { storeToRefs } from "pinia";
+import { computed, ref } from 'vue';
+import { useSudokuEndlessStore } from '@/stores/sudokuEndless';
+import { useConsole } from '@/stores/console';
+import { range, enumerate } from '@/modules/generators';
+import { max } from '@/modules/math';
+import { storeToRefs } from 'pinia';
 const console = useConsole();
 console.log(console);
 
@@ -38,8 +38,8 @@ const dynamicGridSize = computed(() => {
 });
 
 function backgroundGrid(cell) {
-  const darkBackground = "bg-slate-800";
-  const lightBackground = "bg-slate-700";
+  const darkBackground = 'bg-slate-800';
+  const lightBackground = 'bg-slate-700';
 
   // Checker by house
   const houseColumn = getHouseColumn(cell.house);
@@ -53,7 +53,7 @@ function backgroundGrid(cell) {
 }
 
 for (const [index, s] of enumerate(range(10, 0, -2))) {
-  console.log("generator", index, s, typeof s);
+  console.log('generator', index, s, typeof s);
 }
 
 const gridColumns = ref(store.gridSize.columns);
@@ -71,10 +71,10 @@ function onUpdateHouse() {
 }
 
 function focusNextRow() {
-  console.warn("TODO: focus next row");
+  console.warn('// TODO: focus next row');
 }
 function focusPrevRow() {
-  console.warn("TODO: focus prev row");
+  console.warn('// TODO: focus prev row');
 }
 </script>
 

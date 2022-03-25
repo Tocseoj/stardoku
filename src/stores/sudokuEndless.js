@@ -1,11 +1,14 @@
-import { defineStore, acceptHMRUpdate } from "pinia";
-import { computed, reactive, ref } from "vue";
-import { xor } from "@/modules/logic";
-import { error } from "../modules/exceptions";
-// import { useConsole } from "@/stores/console.js";
-// const console = useConsole();
+import { defineStore, acceptHMRUpdate } from 'pinia';
+import { computed, reactive, ref } from 'vue';
+import { xor } from '@/modules/logic';
+import { error } from '@/modules/exceptions';
+import foo from '@/modules/dFoo';
+import { useConsole } from '@/stores/console.js';
+const console = useConsole();
 
-export const useSudokuEndlessStore = defineStore("sudokuEndless", () => {
+console.log('foo', foo(80));
+
+export const useSudokuEndlessStore = defineStore('sudokuEndless', () => {
   const numberOfHouseColumns = computed(() => {
     if (gridSize.house.width === 0) {
       return 0;
@@ -58,7 +61,7 @@ export const useSudokuEndlessStore = defineStore("sudokuEndless", () => {
           row,
           house,
           id,
-          value: house?.toString(16) ?? "_",
+          value: house?.toString(16) ?? '_',
         };
         cells.push(cell);
       }
@@ -74,8 +77,8 @@ export const useSudokuEndlessStore = defineStore("sudokuEndless", () => {
       throw error("Can't have a negative dimension.", { columns, rows, houseWidth, houseHeight });
     }
     if (columns % houseWidth || rows % houseHeight) {
-      const horizontal = columns % houseWidth ? "failed" : "succeeded";
-      const vertical = rows % houseHeight ? "failed" : "succeeded";
+      const horizontal = columns % houseWidth ? 'failed' : 'succeeded';
+      const vertical = rows % houseHeight ? 'failed' : 'succeeded';
       throw error("Can't fit integer number of houses.", { horizontal, vertical });
     }
     if (xor(houseWidth, houseHeight) || xor(columns, rows)) {
